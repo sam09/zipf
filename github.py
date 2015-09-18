@@ -18,6 +18,7 @@ def get_pylinks (directory_links):
 				soup = BeautifulSoup( requests.get ( prefix + link ).text )
 				new_directory_links = soup.find_all(class_='js-directory-link')
 				python_file_links += python_file_links + get_pylinks(new_directory_links)
+				
 		elif name[-1] == 'py':
 			# sp = BeautifulSoup( requests.get( code_prefix + link.replace('/blob', '') ).text )
 			# print sp.find('p').text
@@ -50,15 +51,17 @@ for i in xrange(len(repo_links)):
 
 # fetch code from each repo and store it in a text file
 python_file_links = []
-i = 0
+# i = 0
 for repo in repo_links:
+	repo = repo_links[2]
 	soup = BeautifulSoup( requests.get ( repo ).text )
 	directory_links = soup.find_all(class_='js-directory-link')
 	python_file_links += get_pylinks(directory_links)
-	
-	i+=1
-	# if i == 1:
-	#	break
 
-print python_file_links
+
+py_links = open('links.txt', 'w')
+# print python_file_links
+for i in python_file_links:
+	py_links.write(i + "\n")
+
 print len (python_file_links)
