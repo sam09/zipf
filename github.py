@@ -58,10 +58,8 @@ for repo in repo_links:
 	directory_links = soup.find_all(class_='js-directory-link')
 	python_file_links += get_pylinks(directory_links)
 
-
-py_links = open('links.txt', 'w')
-# print python_file_links
-for i in python_file_links:
-	py_links.write(i + "\n")
+with open('links.txt', 'w') as py_links:
+	for each in python_file_links:
+		pylinks.write(each + "\n")
 
 print len (python_file_links)
