@@ -15,7 +15,7 @@ def get_pylinks (directory_links):
 			# Do some directory shit
 			split_link = link.split('/')
 			if split_link[3] == 'tree':
-				soup = BeautifulSoup( requests.get ( prefix + link ).text )
+				soup = BeautifulSoup( requests.get ( prefix + link,verify = False ).text )
 				new_directory_links = soup.find_all(class_='js-directory-link')
 				python_file_links += python_file_links + get_pylinks(new_directory_links)
 				
@@ -30,7 +30,7 @@ def get_pylinks (directory_links):
 # URL to fetch top python projects
 URL = "https://github.com/search?l=Python&q=stars%3A%3E1&s=stars&type=Repositories"
 prefix = "https://github.com"
-soup = BeautifulSoup(requests.get(URL).text)
+soup = BeautifulSoup(requests.get(URL,verify = False).text)
 
 h3s = soup.find_all(class_='repo-list-name')
 repo_links = []
@@ -51,15 +51,14 @@ for i in xrange(len(repo_links)):
 
 # fetch code from each repo and store it in a text file
 python_file_links = []
-# i = 0
 for repo in repo_links:
 	repo = repo_links[2]
-	soup = BeautifulSoup( requests.get ( repo ).text )
+	soup = BeautifulSoup( requests.get ( repo,verify = False ).text )
 	directory_links = soup.find_all(class_='js-directory-link')
 	python_file_links += get_pylinks(directory_links)
 
 with open('links.txt', 'w') as py_links:
 	for each in python_file_links:
-		pylinks.write(each + "\n")
+		py_links.write(each + "\n")
 
 print len (python_file_links)
